@@ -38,6 +38,15 @@ function requestContainsKeyword(request, words) {
   return null
 }
 
+function generateRandomString(length) {
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let result = '';
+  const charactersLength = characters.length;
+  for (let i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+  return result;
+}
 
 async function enableRequestLogging(page) {
   // Enable request interception
@@ -60,7 +69,6 @@ async function enableRequestLogging(page) {
 
       let matchWord = requestContainsKeyword(request, matchWords)
       requestData.matchWord = matchWord
-
       const hash = crypto.createHash('sha256').update(request.url() + JSON.stringify(request.headers())).digest('hex').slice(0,6);
     
 
@@ -94,7 +102,8 @@ async function enableRequestLogging(page) {
           } catch(e) {
             bodyText = 'redirect response'
           }
-          const responseFilePath = path.join(dir, `${pathname}-${hash}-response.json`);
+          let randomString = generateRandomString(6)
+          const responseFilePath = path.join(dir, `${pathname}-${hash}-${randomString}-response.json`);
           const responseData = {
             url: response.url(),
             status: response.status(),
