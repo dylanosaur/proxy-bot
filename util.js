@@ -83,7 +83,7 @@ async function enableRequestLogging(page) {
         fs.mkdirSync(dir, { recursive: true });
       }
       
-      const filePath = path.join(dir, `${pathname}-${hash}.json`);
+      const filePath = path.join(dir, `${pathname.slice(0,50)}-${hash}.json`);
 
       fs.writeFileSync(filePath, JSON.stringify(requestData, null, 2));
 
@@ -103,7 +103,7 @@ async function enableRequestLogging(page) {
             bodyText = 'redirect response'
           }
           let randomString = generateRandomString(6)
-          const responseFilePath = path.join(dir, `${pathname}-${hash}-${randomString}-response.json`);
+          const responseFilePath = path.join(dir, `${pathname.slice(0,50)}-${hash}-${randomString}-response.json`);
           const responseData = {
             url: response.url(),
             status: response.status(),
